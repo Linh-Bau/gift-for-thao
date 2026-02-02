@@ -114,8 +114,9 @@ function setupSwipeListeners() {
         const img = item.querySelector('img');
         const title = item.querySelector('.coverflow-title');
         const description = item.querySelector('.coverflow-description');
-        
-        if (img) {
+        const hasContent = img || title || description;
+
+        if (hasContent) {
             // Tạo container reflection
             const reflectionDiv = document.createElement('div');
             reflectionDiv.className = 'coverflow-reflection';
@@ -154,19 +155,21 @@ function setupSwipeListeners() {
             }
             
             // Tạo ảnh lật ngược
-            const reflectionImg = document.createElement('img');
-            reflectionImg.src = img.src;
-            reflectionImg.style.cssText = `
-                width: 100%;
-                height: 110px;
-                object-fit: cover;
-                transform: scaleY(-1);
-                filter: blur(1px);
-                display: block;
-                -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-                mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-            `;
-            reflectionDiv.appendChild(reflectionImg);
+            if (img) {
+                const reflectionImg = document.createElement('img');
+                reflectionImg.src = img.src;
+                reflectionImg.style.cssText = `
+                    width: 100%;
+                    height: 110px;
+                    object-fit: cover;
+                    transform: scaleY(-1);
+                    filter: blur(1px);
+                    display: block;
+                    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+                    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+                `;
+                reflectionDiv.appendChild(reflectionImg);
+            }
             
             // Reflection mô tả
             if (description) {
@@ -409,6 +412,7 @@ async function fetchJsonSafe(url) {
 }
 
 async function loadCoverflowItems() {
+    const staticItems = Array.from(coverflow.querySelectorAll('[data-static="true"]')).map((item) => item.cloneNode(true));
     coverflow.innerHTML = '';
 
     let count = 0;
@@ -444,6 +448,11 @@ async function loadCoverflowItems() {
         coverflow.appendChild(item);
         count += 1;
     }
+
+    staticItems.forEach((item) => {
+        coverflow.appendChild(item);
+        count += 1;
+    });
 
     totalImages = count;
     currentIndex = 0;
