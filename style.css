@@ -28,11 +28,7 @@ body {
 
 /* Tạm ẩn cube và rocket để test */
 .container {
-    display: none;
-}
-
-.rocket {
-    display: none;
+    display: flex;
 }
 
 .container {

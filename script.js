@@ -16,15 +16,15 @@ const maxImages = 50;
 const coverflowBasePath = 'asserts/step_2/';
 const imagePrefix = 'img_';
 const imageExt = '.png';
-const textExt = '.txt';
+const textExt = '.json';
 let coverflowReady = false;
 
 // Auto-show coverflow on load (tạm thời test)
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        showCoverflow();
-    }, 500);
-});
+// window.addEventListener('load', () => {
+//     setTimeout(() => {
+//         showCoverflow();
+//     }, 500);
+// });
 
 // Swipe detection
 let touchStartX = 0;
@@ -96,6 +96,10 @@ function closeCoverflow() {
     currentIndex = 0;
     updateCoverflow();
     removeKeyboardListeners();
+    coverflow.innerHTML = '';
+    totalImages = 0;
+    progressBar.style.width = '0%';
+    coverflowReady = false;
 }
 
 function setupSwipeListeners() {
@@ -394,13 +398,13 @@ function imageExists(src) {
     });
 }
 
-async function fetchTextSafe(url) {
+async function fetchJsonSafe(url) {
     try {
         const response = await fetch(url);
-        if (!response.ok) return '';
-        return await response.text();
+        if (!response.ok) return null;
+        return await response.json();
     } catch (error) {
-        return '';
+        return null;
     }
 }
 
@@ -414,10 +418,9 @@ async function loadCoverflowItems() {
         if (!exists) break;
 
         const textSrc = `${coverflowBasePath}${imagePrefix}${i}${textExt}`;
-        const textContent = await fetchTextSafe(textSrc);
-        const lines = textContent.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-        const titleText = lines[0] || `Ảnh ${i}`;
-        const descText = lines.slice(1).join(' ') || '';
+        const jsonContent = await fetchJsonSafe(textSrc);
+        const titleText = jsonContent?.title?.trim() || `Ảnh ${i}`;
+        const descText = jsonContent?.content?.trim() || '';
 
         const item = document.createElement('div');
         item.className = 'coverflow-item';
