@@ -259,6 +259,179 @@ button:active {
     padding: 0 10px;
 }
 
+.curtain {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(180deg, rgba(20, 24, 61, 0.95), rgba(118, 75, 162, 0.98));
+    transform: translateY(100%);
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 50;
+    pointer-events: none;
+}
+
+.rocket {
+    position: fixed;
+    left: 50%;
+    bottom: -120px;
+    transform: translateX(-50%);
+    z-index: 60;
+    opacity: 0;
+    pointer-events: none;
+    font-size: 80px;
+    color: #ff6b6b;
+    filter: drop-shadow(0 4px 12px rgba(255, 107, 107, 0.6));
+}
+
+.rocket i {
+    display: block;
+    animation: rocketShake 0.3s infinite alternate;
+}
+
+@keyframes rocketShake {
+    from { 
+        transform: rotate(-2deg) scale(1); 
+    }
+    to { 
+        transform: rotate(2deg) scale(1.05); 
+    }
+}
+
+.launch .curtain {
+    transform: translateY(0%);
+}
+
+.launch .rocket {
+    opacity: 1;
+    animation: rocketLaunch 1.8s ease-out forwards;
+}
+
+@keyframes rocketLaunch {
+    0% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-50%) translateY(-50vh);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-50%) translateY(-65vh);
+        opacity: 0;
+    }
+}
+
+/* Coverflow Gallery */
+.coverflow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(20, 24, 61, 0.98), rgba(118, 75, 162, 0.98));
+    z-index: 100;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.coverflow-container.active {
+    display: flex;
+    opacity: 1;
+}
+
+.coverflow-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2.5em;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 110;
+}
+
+.coverflow-close:hover {
+    transform: scale(1.2) rotate(90deg);
+    color: #ff6b6b;
+}
+
+.coverflow-wrapper {
+    perspective: 2000px;
+    perspective-origin: 50% 50%;
+    width: 90%;
+    max-width: 800px;
+    height: 400px;
+    overflow: visible;
+}
+
+.coverflow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+}
+
+.coverflow-item {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 300px;
+    height: 350px;
+    transform-origin: center center;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.coverflow-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.coverflow-item:hover img {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.coverflow-progress {
+    width: 80%;
+    max-width: 600px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    z-index: 110;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #667eea);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    width: 10%;
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+}
+
 @media (max-width: 480px) {
     .title {
         margin-top: 10px;
@@ -270,5 +443,14 @@ button:active {
 
     button {
         min-width: 70px;
+    }
+
+    .coverflow-item {
+        width: 200px;
+        height: 250px;
+    }
+
+    .coverflow-progress {
+        width: 90%;
     }
 }
