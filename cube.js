@@ -1,14 +1,25 @@
-/* Cube JavaScript */
+/**
+ * Cube 3D Animation Module
+ * Xử lý xoay cube, hiệu ứng nổ và chuyển cảnh sang coverflow
+ */
+
+// Cube rotation state
 let rotationX = 0;
 let rotationY = 0;
 let rotationZ = 0;
 let isAutoRotate = true;
 let isExploding = false;
 let isLaunching = false;
+
+// DOM elements
 const cube = document.getElementById('cube');
 const curtain = document.getElementById('curtain');
 const rocket = document.getElementById('rocket');
 
+/**
+ * Cập nhật animation xoay của cube
+ * @returns {void}
+ */
 function updateCubeRotation() {
     if (isAutoRotate && !isExploding) {
         cube.style.animation = 'rotateAuto 10s infinite linear';
@@ -20,6 +31,10 @@ function updateCubeRotation() {
     }
 }
 
+/**
+ * Khởi động hiệu ứng nổ và phục hồi cube
+ * @returns {void}
+ */
 function explodeAndRecover() {
     if (isExploding) return;
     isExploding = true;
@@ -43,6 +58,10 @@ function explodeAndRecover() {
     }, 1000);
 }
 
+/**
+ * Kích hoạt hiệu ứng rocket bay và chuyển sang coverflow
+ * @returns {void}
+ */
 function triggerLaunch() {
     if (isLaunching) return;
     isLaunching = true;

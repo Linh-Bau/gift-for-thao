@@ -1,0 +1,49 @@
+<svg width="512" height="384" viewBox="0 0 512 384" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<linearGradient id="envelopeGrad" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0%" stop-color="#FFC7DA" />
+			<stop offset="100%" stop-color="#FFB4CD" />
+		</linearGradient>
+
+		<linearGradient id="flapGrad" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0%" stop-color="#FFB4CD" />
+			<stop offset="100%" stop-color="#FFC7DA" />
+		</linearGradient>
+
+		<g id="envelope-back">
+			<rect x="96" y="136" width="320" height="188" rx="18" fill="url(#envelopeGrad)"
+				stroke="#FFFFFF" stroke-width="4" />
+		</g>
+
+		<g id="paper">
+			<rect x="130" y="160" width="252" height="140" rx="8" fill="#EAEAEA" opacity="0.95" />
+			<line x1="150" y1="190" x2="340" y2="190" stroke="#FFB4CD" stroke-width="3"
+				stroke-linecap="round" />
+			<line x1="150" y1="210" x2="320" y2="210" stroke="#FFB4CD" stroke-width="3"
+				stroke-linecap="round" />
+			<line x1="150" y1="230" x2="330" y2="230" stroke="#FFB4CD" stroke-width="3"
+				stroke-linecap="round" />
+		</g>
+		<g id="envelope-front">
+			<path d="M112 152 L226.58 228.39 L256 210 L285.42 228.39 L400 152 L400 300 L112 300 Z"
+				fill="url(#envelopeGrad)" />
+			<path d="M112 300 L256 210 L400 300" fill="none" stroke="#FFFFFF" stroke-width="5"
+				stroke-linecap="round" stroke-linejoin="round" />
+			<path d="M112 152 L226.58 228.39" fill="none" stroke="#FFFFFF" stroke-width="5"
+				stroke-linecap="round" stroke-linejoin="round" />
+			<path d="M285.42 228.39 L400 152" fill="none" stroke="#FFFFFF" stroke-width="5"
+				stroke-linecap="round" stroke-linejoin="round" />
+		</g>
+		<g id="envelope-flap">
+			<path d="M112 152 L256 248 L400 152" fill="url(#flapGrad)" stroke="#FFFFFF"
+				stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+		</g>
+	</defs>
+
+	<g id="envelope-group">
+		<use href="#envelope-back"></use>
+		<use href="#paper"></use>
+		<use href="#envelope-front"></use>
+		<use href="#envelope-flap"></use>
+	</g>
+</svg>

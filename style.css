@@ -1,3 +1,25 @@
+:root {
+    --primary-purple: #667eea;
+    --primary-purple-dark: #764ba2;
+    --accent-red: #ff6b6b;
+    --white: #ffffff;
+    --white-alpha-30: rgba(255, 255, 255, 0.3);
+    --white-alpha-80: rgba(255, 255, 255, 0.8);
+    --black-alpha-20: rgba(0, 0, 0, 0.2);
+    --black-alpha-30: rgba(0, 0, 0, 0.3);
+    
+    --border-radius-sm: 8px;
+    --border-radius-md: 15px;
+    
+    --transition-fast: 0.3s ease;
+    --transition-normal: 0.5s ease;
+    --transition-slow: 0.6s cubic-bezier(0.35, 0, 0.25, 1);
+    
+    --shadow-sm: 0 4px 15px var(--black-alpha-20);
+    --shadow-md: 0 6px 20px var(--black-alpha-30);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +32,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-dark) 100%);
     font-family: 'Arial', sans-serif;
     flex-direction: column;
     gap: 20px;
@@ -18,15 +40,19 @@ body {
 }
 
 .title {
-    color: white;
+    color: var(--white);
     font-size: clamp(1.5em, 5vw, 2.5em);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 4px var(--black-alpha-30);
     text-align: center;
     position: relative;
     z-index: 10;
 }
 
 body.stage-coverflow .container {
+    display: none;
+}
+
+body.stage-letter .container {
     display: none;
 }
 
@@ -48,20 +74,20 @@ button {
     padding: clamp(10px, 3vw, 12px) clamp(12px, 3vw, 24px);
     font-size: clamp(0.8em, 3vw, 1em);
     border: none;
-    border-radius: 8px;
-    background: white;
-    color: #667eea;
+    border-radius: var(--border-radius-sm);
+    background: var(--white);
+    color: var(--primary-purple);
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
     flex: 1 1 auto;
     min-width: 80px;
 }
 
 button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
     background: #f0f0f0;
 }
 
@@ -70,7 +96,7 @@ button:active {
 }
 
 .info {
-    color: white;
+    color: var(--white);
     text-align: center;
     font-size: clamp(0.8em, 2.5vw, 0.95em);
     opacity: 0.9;
@@ -99,7 +125,7 @@ button:active {
     opacity: 0;
     pointer-events: none;
     font-size: 80px;
-    color: #ff6b6b;
+    color: var(--accent-red);
     filter: drop-shadow(0 4px 12px rgba(255, 107, 107, 0.6));
 }
 

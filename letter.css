@@ -1,0 +1,226 @@
+/* Letter stage visibility */
+.envelope-container {
+    display: none;
+}
+
+.letter-stage {
+    display: none;
+    position: fixed;
+    inset: 0;
+    padding: 40px 20px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+body.stage-letter .letter-stage {
+    display: flex;
+}
+
+body.stage-letter .coverflow-container {
+    display: none;
+    opacity: 0;
+}
+
+/* Board background */
+.board {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #5b3a2b, #7a4b32);
+    box-shadow: inset 0 0 0 12px rgba(255, 255, 255, 0.08), inset 0 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.board::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        radial-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px);
+    background-size: 28px 28px, 56px 56px;
+    background-position: 0 0, 10px 10px;
+    opacity: 0.6;
+}
+
+/* Photos pinned on board */
+.board-photo {
+    position: absolute;
+    width: clamp(140px, 18vw, 220px);
+    background: #ffffff;
+    padding: 10px 10px 16px;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    transform: rotate(-2deg);
+}
+
+.board-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+}
+
+.photo-caption {
+    display: block;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #5b3a2b;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+.board-photo::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #ff6b6b 40%, #d64545 100%);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.board-photo::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    width: 2px;
+    height: 18px;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.photo-1 { top: 8%; left: 8%; transform: rotate(-6deg); }
+.photo-2 { top: 12%; right: 10%; transform: rotate(4deg); }
+.photo-3 { bottom: 10%; left: 12%; transform: rotate(3deg); }
+.photo-4 { bottom: 12%; right: 12%; transform: rotate(-5deg); }
+
+/* Letter paper */
+.letter-paper {
+    position: relative;
+    z-index: 2;
+    width: min(680px, 90vw);
+    padding: 40px 48px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #fffdf7 0px,
+        #fffdf7 26px,
+        #e8d8c7 27px
+    );
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.letter-title {
+    font-size: 1.6rem;
+    margin-bottom: 18px;
+    color: #4b2d23;
+}
+
+.letter-body {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: #4b2d23;
+}
+
+.letter-body p {
+    margin-bottom: 10px;
+}
+
+.letter-sign {
+    margin-top: 24px;
+    text-align: right;
+    font-weight: 600;
+    color: #4b2d23;
+}
+
+
+@keyframes shake {
+
+     0%,
+     100% {
+         transform: translate(0, 0) rotate(0deg);
+     }
+
+     10% {
+         transform: translate(-2px, -1px) rotate(-0.5deg);
+     }
+
+     20% {
+         transform: translate(2px, 1px) rotate(0.5deg);
+     }
+
+     30% {
+         transform: translate(-2px, 1px) rotate(-0.5deg);
+     }
+
+     40% {
+         transform: translate(2px, -1px) rotate(0.5deg);
+     }
+
+     50% {
+         transform: translate(-1px, -2px) rotate(-0.3deg);
+     }
+
+     60% {
+         transform: translate(1px, 2px) rotate(0.3deg);
+     }
+
+     70% {
+         transform: translate(-1px, 1px) rotate(-0.3deg);
+     }
+
+     80% {
+         transform: translate(1px, -1px) rotate(0.3deg);
+     }
+
+     90% {
+         transform: translate(-1px, 0px) rotate(-0.2deg);
+     }
+ }
+
+
+ @keyframes openFlap {
+     0% {
+         transform: rotateX(0deg);
+     }
+
+     50% {
+         transform: rotateX(-180deg);
+     }
+
+     100% {
+         transform: rotateX(-180deg);
+         /* giữ nguyên */
+     }
+ }
+
+ @keyframes movePaper {
+
+     0%,
+     50% {
+         transform: translateY(0);
+     }
+
+     100% {
+         transform: translateY(-150px);
+     }
+ }
+
+ .envelope-group {
+     animation: shake 5s infinite;
+ }
+
+ .open-flap {
+     animation: openFlap 1s forwards;
+     transform-origin: top center;
+     transform-box: fill-box;
+ }
+
+ .move-paper {
+     animation: movePaper 1s forwards;
+ }

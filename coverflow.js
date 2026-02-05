@@ -1,31 +1,49 @@
-/* Coverflow Gallery JavaScript */
+/**
+ * Coverflow Gallery Module
+ * 3D carousel gallery với reflection effects, swipe support và keyboard navigation
+ */
+
+// DOM references
 const coverflowContainer = document.getElementById('coverflowContainer');
 const coverflow = document.getElementById('coverflow');
 const progressBar = document.getElementById('progressBar');
+
+// Gallery state
 let currentIndex = 0;
 let totalImages = 0;
+let coverflowReady = false;
+let isLaunchingToLetter = false;
+
+// Configuration
 const maxImages = 50;
 const coverflowBasePath = 'asserts/step_2/';
 const imagePrefix = 'img_';
 const imageExt = '.png';
 const textExt = '.json';
-let coverflowReady = false;
 
-// Swipe detection
-let touchStartX = 0;
-let touchEndX = 0;
-let touchStartY = 0;
-let touchEndY = 0;
-
+/**
+ * Hiển thị gallery coverflow với tất cả ảnh
+ * @async
+ * @returns {Promise<void>}
+ */
 async function showCoverflow() {
-    document.body.classList.add('stage-coverflow');
-    await ensureCoverflowItems();
-    coverflowContainer.classList.add('active');
-    updateCoverflow();
-    setupSwipeListeners();
-    setupKeyboardListeners();
+    try {
+        document.body.classList.add('stage-coverflow');
+        await ensureCoverflowItems();
+        coverflowContainer.classList.add('active');
+        updateCoverflow();
+        setupSwipeListeners();
+        setupKeyboardListeners();
+    } catch (error) {
+        console.error('Error showing coverflow:', error);
+        document.body.classList.remove('stage-coverflow');
+    }
 }
 
+/**
+ * Đóng gallery coverflow và reset về trạng thái ban đầu
+ * @returns {void}
+ */
 function closeCoverflow() {
     document.body.classList.remove('stage-coverflow');
     coverflowContainer.classList.remove('active');
@@ -55,68 +73,25 @@ function setupSwipeListeners() {
         if (hasContent) {
             const reflectionDiv = document.createElement('div');
             reflectionDiv.className = 'coverflow-reflection';
-            reflectionDiv.style.cssText = `
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                height: 120px;
-                margin-top: 8px;
-                perspective: 1000px;
-                pointer-events: none;
-                z-index: 10;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            `;
             
             if (title) {
                 const reflectionTitle = document.createElement('div');
+                reflectionTitle.className = 'coverflow-reflection-title';
                 reflectionTitle.textContent = title.textContent;
-                reflectionTitle.style.cssText = `
-                    color: white;
-                    font-size: 0.95em;
-                    font-weight: bold;
-                    text-align: center;
-                    transform: scaleY(-1);
-                    filter: blur(1px);
-                    opacity: 0.6;
-                    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-                    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-                `;
                 reflectionDiv.appendChild(reflectionTitle);
             }
             
             if (img) {
                 const reflectionImg = document.createElement('img');
+                reflectionImg.className = 'coverflow-reflection-img';
                 reflectionImg.src = img.src;
-                reflectionImg.style.cssText = `
-                    width: 100%;
-                    height: 110px;
-                    object-fit: cover;
-                    transform: scaleY(-1);
-                    filter: blur(1px);
-                    display: block;
-                    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-                    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-                `;
                 reflectionDiv.appendChild(reflectionImg);
             }
             
             if (description) {
                 const reflectionDesc = document.createElement('div');
+                reflectionDesc.className = 'coverflow-reflection-desc';
                 reflectionDesc.textContent = description.textContent;
-                reflectionDesc.style.cssText = `
-                    color: rgba(255, 255, 255, 0.8);
-                    font-size: 0.85em;
-                    text-align: center;
-                    transform: scaleY(-1);
-                    filter: blur(1px);
-                    opacity: 0.5;
-                    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-                    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-                `;
                 reflectionDiv.appendChild(reflectionDesc);
             }
             
@@ -140,7 +115,12 @@ function setupSwipeListeners() {
     const itemsList = document.querySelectorAll('.coverflow-item');
     itemsList.forEach((item, index) => {
         item.addEventListener('click', () => {
-            if (index === currentIndex) return;
+            if (index === currentIndex) {
+                if (index === totalImages - 1) {
+                    triggerLetterTransition();
+                }
+                return;
+            }
             currentIndex = index;
             updateCoverflow();
         });
@@ -187,6 +167,9 @@ function handleSwipe() {
     const diffY = touchStartY - touchEndY;
 
     if (Math.abs(diffY) > 50 && Math.abs(diffY) > Math.abs(diffX)) {
+        if (diffY > 0) {
+            triggerLetterTransition();
+        }
         return;
     }
 
@@ -220,6 +203,31 @@ function removeKeyboardListeners() {
     document.removeEventListener('keydown', handleKeyPress);
 }
 
+/**
+ * Chuyển từ coverflow sang letter với hiệu ứng rocket
+ * @returns {void}
+ */
+function triggerLetterTransition() {
+    if (isLaunchingToLetter || !coverflowContainer.classList.contains('active')) return;
+    isLaunchingToLetter = true;
+
+    document.body.classList.add('launch');
+
+    setTimeout(() => {
+        closeCoverflow();
+        document.body.classList.add('stage-letter');
+    }, 1500);
+
+    setTimeout(() => {
+        document.body.classList.remove('launch');
+        isLaunchingToLetter = false;
+    }, 2500);
+}
+
+/**
+ * Cập nhật vị trí và style của tất cả items trong coverflow
+ * @returns {void}
+ */
 function updateCoverflow() {
     const items = document.querySelectorAll('.coverflow-item');
     const centerIndex = currentIndex;
@@ -274,10 +282,21 @@ function prevImage() {
     updateCoverflow();
 }
 
+/**
+ * Đảm bảo items đã được load trước khi hiển thị
+ * @async
+ * @returns {Promise<void>}
+ */
 async function ensureCoverflowItems() {
     if (coverflowReady) return;
     coverflowReady = true;
-    await loadCoverflowItems();
+    try {
+        await loadCoverflowItems();
+    } catch (error) {
+        console.error('Error loading coverflow items:', error);
+        coverflowReady = false;
+        throw error;
+    }
 }
 
 function imageExists(src) {
@@ -299,49 +318,60 @@ async function fetchJsonSafe(url) {
     }
 }
 
+/**
+ * Load tất cả ảnh và text từ thư mục asserts/step_2
+ * @async
+ * @returns {Promise<void>}
+ */
 async function loadCoverflowItems() {
-    const staticItems = Array.from(coverflow.querySelectorAll('[data-static="true"]')).map((item) => item.cloneNode(true));
-    coverflow.innerHTML = '';
+    try {
+        const staticItems = Array.from(coverflow.querySelectorAll('[data-static="true"]')).map((item) => item.cloneNode(true));
+        coverflow.innerHTML = '';
 
-    let count = 0;
-    for (let i = 1; i <= maxImages; i += 1) {
-        const imageSrc = `${coverflowBasePath}${imagePrefix}${i}${imageExt}`;
-        const exists = await imageExists(imageSrc);
-        if (!exists) break;
+        let count = 0;
+        for (let i = 1; i <= maxImages; i += 1) {
+            const imageSrc = `${coverflowBasePath}${imagePrefix}${i}${imageExt}`;
+            const exists = await imageExists(imageSrc);
+            if (!exists) break;
 
-        const textSrc = `${coverflowBasePath}${imagePrefix}${i}${textExt}`;
-        const jsonContent = await fetchJsonSafe(textSrc);
-        const titleText = jsonContent?.title?.trim() || `Ảnh ${i}`;
-        const descText = jsonContent?.content?.trim() || '';
+            const textSrc = `${coverflowBasePath}${imagePrefix}${i}${textExt}`;
+            const jsonContent = await fetchJsonSafe(textSrc);
+            const titleText = jsonContent?.title?.trim() || `Ảnh ${i}`;
+            const descText = jsonContent?.content?.trim() || '';
 
-        const item = document.createElement('div');
-        item.className = 'coverflow-item';
+            const item = document.createElement('div');
+            item.className = 'coverflow-item';
 
-        const title = document.createElement('div');
-        title.className = 'coverflow-title';
-        title.textContent = titleText;
+            const title = document.createElement('div');
+            title.className = 'coverflow-title';
+            title.textContent = titleText;
 
-        const img = document.createElement('img');
-        img.src = imageSrc;
-        img.alt = `Image ${i}`;
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            img.alt = `Image ${i}`;
+            img.loading = 'lazy';
 
-        const description = document.createElement('div');
-        description.className = 'coverflow-description';
-        description.textContent = descText;
+            const description = document.createElement('div');
+            description.className = 'coverflow-description';
+            description.textContent = descText;
 
-        item.appendChild(title);
-        item.appendChild(img);
-        item.appendChild(description);
+            item.appendChild(title);
+            item.appendChild(img);
+            item.appendChild(description);
 
-        coverflow.appendChild(item);
-        count += 1;
+            coverflow.appendChild(item);
+            count += 1;
+        }
+
+        staticItems.forEach((item) => {
+            coverflow.appendChild(item);
+            count += 1;
+        });
+
+        totalImages = count;
+        currentIndex = 0;
+    } catch (error) {
+        console.error('Error in loadCoverflowItems:', error);
+        throw error;
     }
-
-    staticItems.forEach((item) => {
-        coverflow.appendChild(item);
-        count += 1;
-    });
-
-    totalImages = count;
-    currentIndex = 0;
 }
