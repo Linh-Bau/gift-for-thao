@@ -1,146 +1,352 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hộp 3D Xoay - 6 Mặt</title>
+    <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="cube.css">
-    <link rel="stylesheet" href="coverflow.css">
-    <link rel="stylesheet" href="letter.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-purple: #667eea;
+            --primary-purple-dark: #764ba2;
+            --accent-red: #ff6b6b;
+            --white: #ffffff;
+            --white-alpha-30: rgba(255, 255, 255, 0.3);
+            --white-alpha-80: rgba(255, 255, 255, 0.8);
+            --black-alpha-20: rgba(0, 0, 0, 0.2);
+            --black-alpha-30: rgba(0, 0, 0, 0.3);
+
+            --border-radius-sm: 8px;
+            --border-radius-md: 15px;
+
+            --transition-fast: 0.3s ease;
+            --transition-normal: 0.5s ease;
+            --transition-slow: 0.6s cubic-bezier(0.35, 0, 0.25, 1);
+
+            --shadow-sm: 0 4px 15px var(--black-alpha-20);
+            --shadow-md: 0 6px 20px var(--black-alpha-30);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .app {
+            height: 100vh;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-dark) 100%);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .no-display {
+            display: none;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+
+        /* tấm màn che */
+        .rocket-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .rocket-item {
+            font-size: 96px;
+        }
+
+        @keyframes rocketLaunch {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-150vh);
+                opacity: 0;
+            }
+        }
+
+        .rocket-item.launch {
+            animation: rocketLaunch 2s ease-in forwards;
+        }
+
+        /* Cube */
+        .cube-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container-3d {
+            perspective: 1000px;
+            width: clamp(150px, 60vw, 300px);
+            height: clamp(150px, 60vw, 300px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(1.5em, 4vw, 2.5em);
+            font-weight: bold;
+            color: white;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            opacity: 0.9;
+            flex-direction: column;
+            gap: clamp(10px, 3vw, 20px);
+        }
+
+        .cube-face img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Các mặt của hộp */
+        .face-1 {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E72);
+            transform: rotateY(0deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+        }
+
+        .face-2 {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            transform: rotateY(90deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+        }
+
+        .face-3 {
+            background: linear-gradient(135deg, #F39C12, #E74C3C);
+            transform: rotateY(180deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+        }
+
+        .face-4 {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+            transform: rotateY(270deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+        }
+
+        .face-5 {
+            background: linear-gradient(135deg, #3498DB, #2980B9);
+            transform: rotateX(90deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+        }
+
+        .face-6 {
+            background: linear-gradient(135deg, #2ECC71, #27AE60);
+            transform: rotateX(-90deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+        }
+
+        @keyframes rotateAuto {
+            0% {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
+        }
+
+        @keyframes flyOut1 {
+            0% {
+                transform: rotateY(0deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotateY(0deg) translateZ(clamp(250px, 70vw, 400px)) rotateX(45deg) rotateY(-30deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes flyOut2 {
+            0% {
+                transform: rotateY(90deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotateY(90deg) translateZ(clamp(250px, 70vw, 400px)) rotateX(-45deg) rotateY(30deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes flyOut3 {
+            0% {
+                transform: rotateY(180deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotateY(180deg) translateZ(clamp(250px, 70vw, 400px)) rotateX(30deg) rotateY(45deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes flyOut4 {
+            0% {
+                transform: rotateY(270deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotateY(270deg) translateZ(clamp(250px, 70vw, 400px)) rotateX(-30deg) rotateY(-45deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes flyOut5 {
+            0% {
+                transform: rotateX(90deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotateX(90deg) translateZ(clamp(250px, 70vw, 400px)) rotateY(45deg) rotateZ(30deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes flyOut6 {
+            0% {
+                transform: rotateX(-90deg) translateZ(calc(clamp(100px, 30vw, 150px)));
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotateX(-90deg) translateZ(clamp(250px, 70vw, 400px)) rotateY(-45deg) rotateZ(-30deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .cube.cube-explode .face-1 {
+            animation: flyOut1 0.8s ease-out forwards;
+        }
+
+        .cube.cube-explode .face-2 {
+            animation: flyOut2 0.8s ease-out forwards;
+        }
+
+        .cube.cube-explode .face-3 {
+            animation: flyOut3 0.8s ease-out forwards;
+        }
+
+        .cube.cube-explode .face-4 {
+            animation: flyOut4 0.8s ease-out forwards;
+        }
+
+        .cube.cube-explode .face-5 {
+            animation: flyOut5 0.8s ease-out forwards;
+        }
+
+        .cube.cube-explode .face-6 {
+            animation: flyOut6 0.8s ease-out forwards;
+        }
+
+        .cube-rotate {
+            animation: rotateAuto 20s linear infinite;
+        }
+
+        .cube-explode {
+            animation: none !important;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container" id="cube-container">
-        <div class="cube" id="cube" onclick="explodeAndRecover()">
-            <div class="cube-face face-1">
-                <img src="asserts/step_1/img_1.png" alt="Mặt 1" loading="lazy">
-            </div>
-            <div class="cube-face face-2">
-                <img src="asserts/step_1/img_1.png" alt="Mặt 2" loading="lazy">
-            </div>
-            <div class="cube-face face-3">
-                <img src="asserts/step_1/img_1.png" alt="Mặt 3" loading="lazy">
-            </div>
-            <div class="cube-face face-4">
-                <img src="asserts/step_1/img_1.png" alt="Mặt 4" loading="lazy">
-            </div>
-            <div class="cube-face face-5">
-                <img src="asserts/step_1/img_1.png" alt="Mặt 5" loading="lazy">
-            </div>
-            <div class="cube-face face-6">
-                <img src="asserts/step_1/img_1.png" alt="Mặt 6" loading="lazy">
-            </div>
-        </div>
-    </div>
-
-    <!-- Coverflow Gallery -->
-    <div class="coverflow-container" id="coverflowContainer">
-        <div class="coverflow-wrapper">
-            <div class="coverflow" id="coverflow">
-                <div class="coverflow-item" data-static="true">
-                    <div class="coverflow-title">Kết thúc</div>
-                    <div class="coverflow-text-card">Cảm ơn bạn đã xem</div>
-                    <div class="coverflow-description">Hẹn gặp lại</div>
+    <div class="app">
+        <div class="cube-container">
+            <div class="container-3d">
+                <div class="cube cube-rotate">
+                    <div class="cube-face face-1">
+                        <img src="asserts/step_1/img_1.png" alt="Mặt 1" loading="lazy">
+                    </div>
+                    <div class="cube-face face-2">
+                        <img src="asserts/step_1/img_1.png" alt="Mặt 2" loading="lazy">
+                    </div>
+                    <div class="cube-face face-3">
+                        <img src="asserts/step_1/img_1.png" alt="Mặt 3" loading="lazy">
+                    </div>
+                    <div class="cube-face face-4">
+                        <img src="asserts/step_1/img_1.png" alt="Mặt 4" loading="lazy">
+                    </div>
+                    <div class="cube-face face-5">
+                        <img src="asserts/step_1/img_1.png" alt="Mặt 5" loading="lazy">
+                    </div>
+                    <div class="cube-face face-6">
+                        <img src="asserts/step_1/img_1.png" alt="Mặt 6" loading="lazy">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="coverflow-progress">
-            <div class="progress-bar" id="progressBar"></div>
+
+        
+
+        <div class="rocket-container no-display">
+            <i class="rocket-item bi bi-rocket-fill"></i>
         </div>
     </div>
 
-    <!-- Envelope -->
-    <div class="envelope-container" id="envelopeContainer">
-        <svg width="512" height="384" viewBox="0 0 512 384" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="envelopeGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#FFC7DA" />
-                    <stop offset="100%" stop-color="#FFB4CD" />
-                </linearGradient>
+    <script>
+        // app
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
-                <linearGradient id="flapGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#FFB4CD" />
-                    <stop offset="100%" stop-color="#FFC7DA" />
-                </linearGradient>
+        // cube logic
+        const cube = document.querySelector('.cube');
+        const cubeContainer = document.querySelector('#cube-container');
 
-                <g id="envelope-back">
-                    <rect x="96" y="136" width="320" height="188" rx="18" fill="url(#envelopeGrad)" stroke="#FFFFFF" stroke-width="4" />
-                </g>
-
-                <g id="paper">
-                    <rect x="130" y="160" width="252" height="140" rx="8" fill="#EAEAEA" opacity="0.95" />
-                    <line x1="150" y1="190" x2="340" y2="190" stroke="#FFB4CD" stroke-width="3" stroke-linecap="round" />
-                    <line x1="150" y1="210" x2="320" y2="210" stroke="#FFB4CD" stroke-width="3" stroke-linecap="round" />
-                    <line x1="150" y1="230" x2="330" y2="230" stroke="#FFB4CD" stroke-width="3" stroke-linecap="round" />
-                </g>
-
-                <g id="envelope-front">
-                    <path d="M112 152 L226.58 228.39 L256 210 L285.42 228.39 L400 152 L400 300 L112 300 Z" fill="url(#envelopeGrad)" />
-                    <path d="M112 300 L256 210 L400 300" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M112 152 L226.58 228.39" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M285.42 228.39 L400 152" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-                </g>
-
-                <g id="envelope-flap">
-                    <path d="M112 152 L256 248 L400 152" fill="url(#flapGrad)" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                </g>
-            </defs>
-            <g id="envelope-group">    
-                <use href="#envelope-back"></use>
-                <use href="#paper"></use>
-                <use href="#envelope-front"></use>
-                <use href="#envelope-flap"></use>
-            </g>
-        </svg>
-    </div>
-
-
-    <!--nội dung bức thư-->
-    <section class="letter-stage" id="letterStage" aria-label="Thư tay">
-        <div class="board" aria-hidden="true">
-            <div class="board-photo photo-1">
-                <img src="asserts/step_1/img_1.png" alt="Ảnh kỷ niệm 1" loading="lazy">
-                <span class="photo-caption">Khoảnh khắc 1</span>
-            </div>
-            <div class="board-photo photo-2">
-                <img src="asserts/step_1/img_1.png" alt="Ảnh kỷ niệm 2" loading="lazy">
-                <span class="photo-caption">Khoảnh khắc 2</span>
-            </div>
-            <div class="board-photo photo-3">
-                <img src="asserts/step_1/img_1.png" alt="Ảnh kỷ niệm 3" loading="lazy">
-                <span class="photo-caption">Khoảnh khắc 3</span>
-            </div>
-            <div class="board-photo photo-4">
-                <img src="asserts/step_1/img_1.png" alt="Ảnh kỷ niệm 4" loading="lazy">
-                <span class="photo-caption">Khoảnh khắc 4</span>
-            </div>
-        </div>
-
-        <article class="letter-paper" aria-label="Nội dung bức thư">
-            <h2 class="letter-title">Gửi bạn,</h2>
-            <div class="letter-body">
-                <p>Hôm nay mình muốn gửi đến bạn một vài dòng thật nhẹ nhàng.</p>
-                <p>Những kỷ niệm nhỏ bé, những khoảnh khắc vui buồn đều được giữ lại ở đây.</p>
-                <p>Cảm ơn bạn đã ở cạnh và tạo nên một chặng đường thật đẹp.</p>
-                <p>Chúc bạn luôn bình an, rạng rỡ và hạnh phúc.</p>
-                <p>Hẹn gặp lại trong những ngày thật đặc biệt.</p>
-            </div>
-            <div class="letter-sign">Thân mến 💜</div>
-        </article>
-    </section>
-
-    <div class="curtain" id="curtain" aria-hidden="true"></div>
-    <div class="rocket" id="rocket" aria-hidden="true">
-        <i class="bi bi-rocket-fill"></i>
-    </div>
-
-    <script src="script.js"></script>
-    <script src="cube.js"></script>
-    <script src="coverflow.js"></script>
-    <script src="letter.js"></script>
+        cube.addEventListener('click', async () => {
+            cube.classList.remove('cube-rotate');
+            cube.classList.add('cube-explode');
+            await sleep(2000);
+            cubeContainer.classList.add('fade-out');
+            await sleep(2000);
+        });
+    </script>
 </body>
 
 </html>
