@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="app d-grid-center">
+        <div class="container-3d">
+            <div class="cube cube-rotate">
+                <div class="cube-face face-1">
+                    <img src="asserts/step_1/img_1.png" alt="Mặt 1" loading="lazy">
+                </div>
+                <div class="cube-face face-2">
+                    <img src="asserts/step_1/img_1.png" alt="Mặt 2" loading="lazy">
+                </div>
+                <div class="cube-face face-3">
+                    <img src="asserts/step_1/img_1.png" alt="Mặt 3" loading="lazy">
+                </div>
+                <div class="cube-face face-4">
+                    <img src="asserts/step_1/img_1.png" alt="Mặt 4" loading="lazy">
+                </div>
+                <div class="cube-face face-5">
+                    <img src="asserts/step_1/img_1.png" alt="Mặt 5" loading="lazy">
+                </div>
+                <div class="cube-face face-6">
+                    <img src="asserts/step_1/img_1.png" alt="Mặt 6" loading="lazy">
+                </div>
+            </div>
+        </div>
+
+        <div class="coverflow-container no-display">
+            <div class="coverflow-wrapper">
+                <div class="coverflow" id="coverflow">
+
+                    <div class="coverflow-item">
+                        <div class="coverflow-title">Title 1</div>
+                        <img src="asserts/step_2/img_1.png" loading="lazy">
+                        <div class="coverflow-description">Description 1</div>
+                    </div>
+
+                    <div class="coverflow-item">
+                        <div class="coverflow-title">Title 2</div>
+                        <img src="asserts/step_2/img_2.png" loading="lazy">
+                        <div class="coverflow-description">Description 2</div>
+                    </div>
+
+                    <div class="coverflow-item">
+                        <div class="coverflow-title">Kết thúc</div>
+                        <div class="coverflow-text-card">Cảm ơn bạn</div>
+                        <div class="coverflow-description">Swipe lên để tiếp tục</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="coverflow-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="rocket-container no-display">
+            <i class="rocket-item bi bi-rocket-fill"></i>
+        </div>
+    </div>
+    <script>
+        // function
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // đối tượng
+        const container_1 = document.querySelector('.container-3d');
+        const rocket_container = document.querySelector('.rocket-container');
+
+        const cube = document.querySelector('.cube');
+        const rocket = document.querySelector('.rocket-item');
+
+        cube.addEventListener('click', async () => {
+            cube.classList.remove('cube-rotate');
+            cube.classList.add('cube-explode');
+            container_1.classList.add('fade-out');
+            await sleep(500);
+            rocket_container.classList.remove('no-display');
+            rocket.classList.add('fly-up');
+        });
+    </script>
+</body>
+
+</html>
