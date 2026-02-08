@@ -1,0 +1,182 @@
+:root {
+    --line-color: #e8d8c7;
+    --line-height: 32px;
+    /* Chiều cao dòng phải khớp với kích thước gradient */
+}
+
+/* Board background */
+.letter-container {
+    position: fixed;
+    inset: 0;
+    padding: 40px 20px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    display: flex;
+}
+
+.board {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #5b3a2b, #7a4b32);
+    box-shadow: inset 0 0 0 12px rgba(255, 255, 255, 0.08), inset 0 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.board::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        radial-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px);
+    background-size: 28px 28px, 56px 56px;
+    background-position: 0 0, 10px 10px;
+    opacity: 0.6;
+}
+
+/* Photos pinned on board */
+.board-photo {
+    position: absolute;
+    width: clamp(140px, 18vw, 220px);
+    background: #ffffff;
+    padding: 10px 10px 16px;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    transform: rotate(-2deg);
+}
+
+.board-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+}
+
+.photo-caption {
+    display: block;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #5b3a2b;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+
+.board-photo::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #ff6b6b 40%, #d64545 100%);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.board-photo::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    width: 2px;
+    height: 18px;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.photo-1 {
+    top: 8%;
+    left: 8%;
+    transform: rotate(-6deg);
+}
+
+.photo-2 {
+    top: 12%;
+    right: 10%;
+    transform: rotate(4deg);
+}
+
+.photo-3 {
+    bottom: 10%;
+    left: 12%;
+    transform: rotate(3deg);
+}
+
+.photo-4 {
+    bottom: 12%;
+    right: 12%;
+    transform: rotate(-5deg);
+}
+
+.latter-paper {
+    width: min(600px, 90vw);
+    min-height: 400px;
+    margin: auto;
+    /* Giữ nguyên background gradient như cũ */
+    background-color: #fffdf7;
+    background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+    background-size: 100% var(--line-height);
+
+    /* Tạo lề đỏ */
+    border-left: 2px solid #ffadad;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    /* QUAN TRỌNG: Đẩy toàn bộ nội dung sang phải để tránh vạch lề */
+    padding: 0 20px 0 60px;
+}
+
+/* Vạch lề đỏ thứ 2 (đường kẻ dọc) */
+.latter-paper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 45px;
+    /* Vị trí vạch lề dọc */
+    bottom: 0;
+    width: 1px;
+    background-color: #ffadad;
+}
+
+.latter-content {
+    font-family: 'Itim', cursive;
+    font-size: 20px;
+    line-height: var(--line-height);
+    color: #2c3e50;
+
+    /* QUAN TRỌNG: Căn chỉnh để chân chữ chạm dòng kẻ */
+    /* Số 6px này bạn có thể tăng/giảm nhẹ để chữ "đậu" đúng dòng */
+    padding-top: 6px;
+}
+
+.latter-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 28px;
+    /* Tùy chỉnh kích thước bạn muốn */
+
+    /* QUAN TRỌNG: Chiều cao dòng phải đúng bằng var(--line-height) */
+    line-height: var(--line-height);
+
+    /* Khử hoàn toàn margin để không làm lệch dòng */
+    margin: 0;
+
+    /* Căn chỉnh tinh để chân chữ h2 chạm dòng kẻ */
+    padding-top: 4px;
+
+    color: #d64545;
+    font-weight: normal;
+}
+
+.latter-signature {
+    margin-top: var(--line-height); /* Cách nội dung 1 dòng kẻ */
+    text-align: right;
+    font-family: 'Dancing Script', cursive; /* Dùng font mềm mại hơn cho chữ ký */
+    font-size: 24px;
+    color: #4b2d23;
+    
+    /* Đảm bảo chữ ký cũng nằm trên dòng kẻ */
+    line-height: var(--line-height);
+    padding-right: 20px;
+}
