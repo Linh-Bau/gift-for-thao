@@ -1,0 +1,99 @@
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-2px, -1px) rotate(-0.5deg);
+    }
+
+    20% {
+        transform: translate(2px, 1px) rotate(0.5deg);
+    }
+
+    30% {
+        transform: translate(-2px, 1px) rotate(-0.5deg);
+    }
+
+    40% {
+        transform: translate(2px, -1px) rotate(0.5deg);
+    }
+
+    50% {
+        transform: translate(-1px, -2px) rotate(-0.3deg);
+    }
+
+    60% {
+        transform: translate(1px, 2px) rotate(0.3deg);
+    }
+
+    70% {
+        transform: translate(-1px, 1px) rotate(-0.3deg);
+    }
+
+    80% {
+        transform: translate(1px, -1px) rotate(0.3deg);
+    }
+
+    90% {
+        transform: translate(-1px, 0px) rotate(-0.2deg);
+    }
+}
+
+
+@keyframes openFlap {
+    0% {
+        transform: rotateX(0deg);
+    }
+
+    50% {
+        transform: rotateX(-180deg);
+    }
+
+    100% {
+        transform: rotateX(-180deg);
+        /* giữ nguyên */
+    }
+}
+
+@keyframes movePaper {
+
+    0%,
+    50% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-150px);
+    }
+}
+
+.envelope-group {
+    animation: shake 5s infinite;
+}
+
+.open-flap {
+    animation: openFlap 1s forwards;
+    transform-origin: top center;
+    transform-box: fill-box;
+}
+
+.move-paper {
+    animation: movePaper 1s forwards;
+}
+
+.envelope-container {
+    display: flex;
+    justify-content: center;  /* căn ngang */
+    align-items: center;      /* căn dọc */
+    height: 100%;
+}
+
+.envelope-container svg{
+    width: 90%;
+    height: auto;
+    max-width: 512px;
+    max-height: 384px;
+}

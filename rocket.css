@@ -1,7 +1,7 @@
-/* rocket.css */
+/* styles */
 .rocket-container{
+    width: 100%;
     height: 100vh;
-    width: 100vw;
     display: grid;
 }
 
@@ -10,6 +10,8 @@
     justify-self: center;
     font-size: 96px;
 }
+
+/* animation */
 
 @keyframes flyUp {
     0% {
@@ -22,6 +24,8 @@
     }
 }
 
-.rocket-item.fly-up{
+
+
+.fly-up .rocket-item{
     animation: flyUp 2s linear forwards;
 }

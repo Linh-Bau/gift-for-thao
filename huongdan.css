@@ -1,0 +1,22 @@
+.huong-dan-container {
+    width: 80%;
+    height: 10%;
+    position: absolute;
+    background: transparent;
+    overflow: hidden; /* đảm bảo nội dung không tràn ra ngoài */
+
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 100;
+
+    margin: 20px auto;
+}
+
+.huong-dan-title{
+    font-size: 1rem;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

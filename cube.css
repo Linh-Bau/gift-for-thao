@@ -1,4 +1,5 @@
-/* cube */
+/* styles */
+
 .container-3d {
     perspective: 1000px;
     width: clamp(150px, 60vw, 300px);
@@ -25,7 +26,7 @@
     font-weight: bold;
     color: white;
     border: 3px solid rgba(255, 255, 255, 0.5);
-    opacity: 0.9;
+    opacity: 0.98;
     flex-direction: column;
     gap: clamp(10px, 3vw, 20px);
 }
@@ -67,6 +68,10 @@
     background: linear-gradient(135deg, #2ECC71, #27AE60);
     transform: rotateX(-90deg) translateZ(calc(clamp(100px, 30vw, 150px)));
 }
+
+
+
+/* animations */
 
 @keyframes rotateAuto {
     0% {
@@ -150,34 +155,45 @@
     }
 }
 
-.cube.cube-explode .face-1 {
+.cube.animation-cube-explode .face-1 {
     animation: flyOut1 0.8s linear forwards;
 }
 
-.cube.cube-explode .face-2 {
+.cube.animation-cube-explode .face-2 {
     animation: flyOut2 0.8s linear forwards;
 }
 
-.cube.cube-explode .face-3 {
+.cube.animation-cube-explode .face-3 {
     animation: flyOut3 0.8s linear forwards;
 }
 
-.cube.cube-explode .face-4 {
+.cube.animation-cube-explode .face-4 {
     animation: flyOut4 0.8s linear forwards;
 }
 
-.cube.cube-explode .face-5 {
+.cube.animation-cube-explode .face-5 {
     animation: flyOut5 0.8s linear forwards;
 }
 
-.cube.cube-explode .face-6 {
+.cube.animation-cube-explode .face-6 {
     animation: flyOut6 0.8s linear forwards;
 }
 
-.cube-rotate {
+.animation-cube-rotate{
     animation: rotateAuto 20s linear infinite;
 }
 
-.cube-explode {
+.animation-cube-explode{
     animation: none !important;
+}
+
+/*hiệu ứng cho layer*/
+
+#step-1.topmost{
+    z-index: 10;
+}
+
+#step-1.hidden{
+    z-index: 1;
+    animation: fadeOut 1s linear forwards;;
 }

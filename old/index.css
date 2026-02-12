@@ -1,4 +1,3 @@
-/* styles */
 :root {
     --primary-purple: #667eea;
     --primary-purple-dark: #764ba2;
@@ -32,35 +31,24 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
+
 .app {
     min-width: 100vw;
     min-height: 100vh;
-    position: relative;
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-dark) 100%);
+    position: relative; /* thêm dòng này */
 }
 
-.layer-container{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-dark) 100%);
-    overflow: hidden; /* đảm bảo nội dung không tràn ra ngoài */
 
-    inset: 0;
+.d-grid-center {
     display: grid;
-    place-items: center;
-    z-index: 1;
+    place-content: center;
 }
 
 
 .no-display {
     display: none;
 }
-
-.topmost{
-    z-index: 10;
-}
-
-/*animations*/
 
 @keyframes fadeIn {
     0% {
@@ -80,11 +68,10 @@ body {
     }
 }
 
-.animation-fade-in {
+.fade-in {
     animation: fadeIn 1s linear forwards;
 }
 
-.animation-fade-out {
+.fade-out {
     animation: fadeOut 1s linear forwards;
 }
-
