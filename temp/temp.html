@@ -1,94 +1,43 @@
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thư Tay Kẻ Dòng</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Itim&family=Kalam:wght@300&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --line-color: #e8d8c7;
-            --line-height: 32px;
-            /* Chiều cao dòng phải khớp với kích thước gradient */
-        }
-
-        .paper {
-            width: min(600px, 90vw);
-            min-height: 400px;
-            /* Giữ nguyên background gradient như cũ */
-            background-color: #fffdf7;
-            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
-            background-size: 100% var(--line-height);
-
-            /* Tạo lề đỏ */
-            border-left: 2px solid #ffadad;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-
-            /* QUAN TRỌNG: Đẩy toàn bộ nội dung sang phải để tránh vạch lề */
-            padding: 0 20px 0 60px;
-        }
-
-        /* Vạch lề đỏ thứ 2 (đường kẻ dọc) */
-        .paper::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 45px;
-            /* Vị trí vạch lề dọc */
-            bottom: 0;
-            width: 1px;
-            background-color: #ffadad;
-        }
-
-        .content {
-            font-family: 'Itim', cursive;
-            font-size: 20px;
-            line-height: var(--line-height);
-            color: #2c3e50;
-
-            /* QUAN TRỌNG: Căn chỉnh để chân chữ chạm dòng kẻ */
-            /* Số 6px này bạn có thể tăng/giảm nhẹ để chữ "đậu" đúng dòng */
-            padding-top: 6px;
-        }
-
-        h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 28px;
-            /* Tùy chỉnh kích thước bạn muốn */
-
-            /* QUAN TRỌNG: Chiều cao dòng phải đúng bằng var(--line-height) */
-            line-height: var(--line-height);
-
-            /* Khử hoàn toàn margin để không làm lệch dòng */
-            margin: 0;
-
-            /* Căn chỉnh tinh để chân chữ h2 chạm dòng kẻ */
-            padding-top: 4px;
-
-            color: #d64545;
-            font-weight: normal;
-        }
-    </style>
+    <title>Document</title>
 </head>
-
 <body>
+    <button id="playBtn" type="button">Play</button>
+    <input id="progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Audio progress">
+    <audio id="bgAudio" src="bg.mp3" preload="auto"></audio>
 
-    <article class="paper">
-        <h2>Gửi bạn thân mến,</h2>
-        <div class="content">
-            Hôm nay mình ngồi lại để viết vài dòng cho bạn.<br>
-            Trang giấy này được tạo ra bằng HTML và CSS thuần đấy.<br>
-            Bạn có thấy những đường kẻ này không? Chúng giúp chữ viết của chúng ta thẳng hàng hơn.<br>
-            Hy vọng bạn sẽ thích giao diện mộc mạc và chân thành này.<br>
-            Chúc bạn một ngày làm việc thật hiệu quả và tràn đầy niềm vui!<br>
-            Hẹn gặp lại bạn vào một ngày gần nhất.
-        </div>
-    </article>
+    <script>
+        const playBtn = document.getElementById('playBtn');
+        const bgAudio = document.getElementById('bgAudio');
+        const progress = document.getElementById('progress');
 
+        playBtn.addEventListener('click', () => {
+            bgAudio.play().catch(() => {
+                // Autoplay policies can block playback until user interaction
+            });
+        });
+
+        bgAudio.addEventListener('loadedmetadata', () => {
+            progress.value = 0;
+        });
+
+        bgAudio.addEventListener('timeupdate', () => {
+            if (!bgAudio.duration) {
+                return;
+            }
+            progress.value = (bgAudio.currentTime / bgAudio.duration) * 100;
+        });
+
+        progress.addEventListener('input', () => {
+            if (!bgAudio.duration) {
+                return;
+            }
+            bgAudio.currentTime = (progress.value / 100) * bgAudio.duration;
+        });
+    </script>
 </body>
-
 </html>

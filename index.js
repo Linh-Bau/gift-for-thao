@@ -36,6 +36,7 @@ async function setLayerHidden(layerName) {
     layer.classList.add('no-display');
     layer.style.zIndex = 1;
 }
+const bgAudio = document.getElementById('bgAudio');
 // cube animation control
 const cube = document.querySelector('.cube');
 const cubeRotateClass = 'animation-cube-rotate';
@@ -46,6 +47,10 @@ const setupCube = () => {
     // setLayerTopMost('step-1');
 
     cube.addEventListener('click', async () => {
+        // phát nhạc nền
+        bgAudio.play().catch(() => {
+                // Autoplay policies can block playback until user interaction
+        });
         // khi click dừng xoay
         cube.classList.remove(cubeRotateClass);
         // bật hiệu ứng nổ
